@@ -64,7 +64,7 @@ function page() {
                 </button>
               </div>
               <p className="text-sm text-center text-gray-400">
-                Don't have an account yet?{" "}
+               {` Don't have an account yet?`}{" "}
                 <Link
                   href="/sign-up"
                   className="text-indigo-400 focus:outline-none focus:underline focus:text-indigo-500 !rounded-xl dark:focus:border-indigo-800"

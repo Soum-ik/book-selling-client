@@ -8,4 +8,8 @@
     .liner-bg {
         @apply bg-gradient-to-tl from-neutral-800  to-neutral-950
     }
+    .custom-font {
+        font-family: "Playwrite PT", cursive;
+    }
 }
+
