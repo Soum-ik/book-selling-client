@@ -22,6 +22,12 @@ const config = {
       fontFamily : {
           defaultFont: [] 
       }, 
+      colors : {
+        textColor : `#A8B3CF`, 
+        bgColor : `#0E1217`, 
+        cardColor: `#20262D`,
+        cardColor1: `#1C1F26`
+      }, 
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
