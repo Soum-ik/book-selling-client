@@ -11,7 +11,7 @@ function MyFeed() {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 relative">
       {/* Feed Settings */}
       <h1 className="flex items-center px-3 py-2 gap-2 bg-cardColor1 font-semibold max-w-max rounded-lg text-textColor shadow-lg cursor-pointer hover:text-white transition-all duration-500 hover:bg-cardColor">
         <MdThumbsUpDown />
@@ -28,14 +28,11 @@ function MyFeed() {
 
       
       {showDropdown && (
-        <div className=" mr-32   mt-24  px-3 py-2 flex items-center justify-center bg-cardColor1 font-semibold max-w-max rounded-lg text-textColor shadow-lg cursor-pointer hover:text-white transition-all duration-500 hover:bg-cardColor">
-       
+        <div className="   absolute right-0 -top-5 px-3 py-2 flex items-center justify-center bg-cardColor1 font-semibold max-w-max rounded-lg text-textColor shadow-lg cursor-pointer transition-all duration-700 group-hover">
           <div className="" onClick={() =>setShowDropdown(!showDropdown)}>
-            <option value="">Sort By Name</option>
-            <option value="">Sort By Date</option>
-
+            <option className="hover:bg-cardColor backdrop-blur-md  rounded hover:text-white">Sort By Name</option>
+            <option className="hover:bg-cardColor backdrop-blur-md  rounded hover:text-white">Sort By Date</option>
           </div>
-     
         </div>
       )}
     </div>

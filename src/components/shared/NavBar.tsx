@@ -12,7 +12,7 @@ export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false)
   let image;
   return (
-    <div className="fixed bg-[#0E1217] border-b border-gray-100  max-h-max  top-0 left-0 right-0 bottom-0 mx-auto  px-4 py-2 shadow-2xl backdrop-blur-xl">
+    <div className="fixed z-50 bg-[#0E1217] border-b border-gray-100  max-h-max  top-0 left-0 right-0 bottom-0 mx-auto  px-4 py-2 shadow-2xl backdrop-blur-xl">
      <div className=" flex  rounded-md flex-grow items-center justify-between">
         <div>
           <h2 className="sm:text-3xl text-2xl font-semibold text-white  bg-clip-text   select-none  custom-font">Book Sell </h2>
