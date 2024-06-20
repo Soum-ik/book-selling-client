@@ -5,10 +5,11 @@ import PostPopUp from "@/components/shared/PopUp/PostPopUp";
 import { FiMessageSquare, FiBookmark } from "react-icons/fi";
 import React, { useState } from "react";
 import { TiArrowUpOutline } from "react-icons/ti";
+import { relativeDate } from "@/lib/utils";
 
 export interface PostData {
     images: string[];
-    createdAt: string;
+    createdAt: Date;
     message: string;
     semester: string;
     totalBook: string;
@@ -24,10 +25,8 @@ export interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ dataProps }) => {
-    const { createdAt, images, message } = dataProps;
-    const [isOpen, setIsOpen] = useState(true);
-    console.log(images, 'image');
-
+    const { createdAt, images, message, semester } = dataProps;
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div className="shadow-lg p-3 rounded-2xl bg-cardColor1 max-w-sm">
@@ -35,7 +34,7 @@ const Post: React.FC<PostProps> = ({ dataProps }) => {
                 {message || `Public APIs — A directory of free and public APIs`}
             </h1>
             <h1 className="font-semibold line-clamp-3 text-textColor text-xs mt-5">
-                {createdAt || "2 Apr"}
+                {relativeDate(createdAt)}  {/* { || "2 Apr"} */}
             </h1>
             <div className="py-5 w-full group relative transition-colors duration-500">
                 <Image
@@ -46,7 +45,7 @@ const Post: React.FC<PostProps> = ({ dataProps }) => {
                     alt="Post Image"
                 />
                 <p className="group-hover:text-white cursor-pointer max-w-max mx-auto font-bold text-sm text-center absolute top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2 hidden group-hover:block">
-                    1st Semester
+                    {semester + ` Semester`}
                 </p>
             </div>
 
@@ -61,7 +60,7 @@ const Post: React.FC<PostProps> = ({ dataProps }) => {
                     <FiBookmark className="size-5" />
                 </div>
             </div>
-            {/* {isOpen && <PostPopUp images={[]} isClose={() => setIsOpen(!isOpen)} time={""} />} */}
+            {isOpen && <PostPopUp data={dataProps} isClose={() => setIsOpen(!isOpen)} />}
         </div>
     );
 };

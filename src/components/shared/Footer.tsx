@@ -10,11 +10,11 @@ interface Content {
 }
 
 const contents: Content[] = [
-  { id: 1, name: "Home", icon: <BiHome size={25} /> },
-  { id: 2, name: "Search", icon: <BiSearch size={25} /> },
+  { id: 1, name: "Home", icon: <BiHome /> },
+  { id: 2, name: "Search", icon: <BiSearch /> },
   { id: 3, name: "Plus", icon: <FaPlus size={50} className="bg-[#1A1F26] p-3 !rounded-2xl" /> },
-  { id: 4, name: "Profile", icon: <BiUser size={25} /> },
-  { id: 5, name: "Semester", icon: <BiSolidMedal size={25} /> },
+  { id: 4, name: "Profile", icon: <BiUser /> },
+  { id: 5, name: "Semester", icon: <BiSolidMedal /> },
 ];
 
 function Footer() {
@@ -33,13 +33,13 @@ function Footer() {
             onClick={() => handleActive(content.id)}
             className={`flex cursor-pointer items-center justify-center  flex-col ${content.id === active ? '   ' : ''}`}
           >
-            <div className={content.id === active ? 'text-white' : 'text-[#A8B3CF]'}>
+            <div className={`text-[22px] sm:text-[30px] ${content.id === active ? 'text-white' : 'text-[#A8B3CF]'}`}>
               {content.icon}
             </div>
             {content.name !== 'Plus' && (
-              <h1 className={content.id === active ? 'text-white' : 'text-[#A8B3CF]'}>
+              <div className={`text-xs xs:text-lg ${content.id === active ? 'text-white' : 'text-[#A8B3CF]'}`}>
                 {content.name}
-              </h1>
+              </div>
             )}
           </div>
         ))}
