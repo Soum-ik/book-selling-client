@@ -19,16 +19,19 @@ const config = {
       },
     },
     extend: {
-      fontFamily : {
-          defaultFont: [] 
-      }, 
-      colors : {
-        textColor : `#A8B3CF`, 
-        bgColor : `#0E1217`, 
+      screens: {
+        'xs': '440px'
+      },
+      fontFamily: {
+        defaultFont: []
+      },
+      colors: {
+        textColor: `#A8B3CF`,
+        bgColor: `#0E1217`,
         cardColor: `#20262D`,
         cardColor1: `#1C1F26`,
         shadowColor: '#221B49'
-      }, 
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

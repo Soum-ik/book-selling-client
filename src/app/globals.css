@@ -11,5 +11,8 @@
     .custom-font {
         font-family: "Playwrite PT", cursive;
     }
+    .color-setUp {
+        @apply bg-cardColor text-textColor hover:text-white hover:bg-cardColor1 border-textColor/50
+    }
 }
 

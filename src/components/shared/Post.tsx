@@ -1,43 +1,45 @@
-"use client"
+"use client";
+
 import Image from "next/image";
-import PostPopUp from "@/components/shared/PopUp/PostPopUp"
-import { FiMessageSquare } from "react-icons/fi";
-import { FiBookmark } from "react-icons/fi";
-import React from 'react';
+import PostPopUp from "@/components/shared/PopUp/PostPopUp";
+import { FiMessageSquare, FiBookmark } from "react-icons/fi";
+import React, { useState } from "react";
 import { TiArrowUpOutline } from "react-icons/ti";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog"
 
-interface PostData {
-    image: string;
-    time: string;
+export interface PostData {
+    images: string[];
+    createdAt: string;
     message: string;
+    semester: string;
+    totalBook: string;
+    price: number;
+    comment: [];
+    userId: string;
+    urgent: boolean;
+    isAvaiableFullSet: boolean;
 }
-
-
 
 export interface PostProps {
     dataProps: PostData;
 }
 
-const Post :React.FC<PostProps>  = ({ dataProps }) => {
-    const { time, image, message } = dataProps;
+const Post: React.FC<PostProps> = ({ dataProps }) => {
+    const { createdAt, images, message } = dataProps;
+    const [isOpen, setIsOpen] = useState(true);
+    console.log(images, 'image');
+
+
     return (
-        <div className='shadow-lg p-3 rounded-2xl bg-cardColor1 max-w-sm'>
-            <h1 className='font-bold line-clamp-3 text-white text-lg'>{message || `Public APIs — A directory of free and public apis`}</h1>
-            <h1 className='font-semibold line-clamp-3 text-textColor text-xs mt-5'>{time || '2 apr'}</h1>
+        <div className="shadow-lg p-3 rounded-2xl bg-cardColor1 max-w-sm">
+            <h1 className="font-bold line-clamp-3 text-white text-lg">
+                {message || `Public APIs — A directory of free and public APIs`}
+            </h1>
+            <h1 className="font-semibold line-clamp-3 text-textColor text-xs mt-5">
+                {createdAt || "2 Apr"}
+            </h1>
             <div className="py-5 w-full group relative transition-colors duration-500">
                 <Image
-                    src={image || '/images/image1.png'}
+                    src={images[0] || "/images/image1.png"}
                     width={400}
                     height={400}
                     className="group-hover:blur-[5px] rounded-lg max-h-[200px] object-cover"
@@ -48,24 +50,10 @@ const Post :React.FC<PostProps>  = ({ dataProps }) => {
                 </p>
             </div>
 
-            {/* <div className="flex justify-between my-1.5">
-                <AlertDialog>
-                    <AlertDialogTrigger> <div className="text-textColor text-[25px] bg-fixed p-2 hover:text-[#39E58C] hover:bg-[#39E58C]/30 rounded-lg"><TiArrowUpOutline className=" size-5" /></div></AlertDialogTrigger>
-                </AlertDialog>
-                    <div className="text-textColor text-[25px] bg-fixed p-2 hover:text-[#974166] hover:bg-[#461f30]/30 rounded-lg"><FiMessageSquare className=" size-5" /></div>
-                    <div className="text-textColor text-[25px] bg-fixed p-2 hover:text-[#1b3e2c] hover:bg-[#39E58C]/30 rounded-lg"><FiBookmark className=" size-5" /></div>
-
-        
-
-            </div> */}
-            <div className="flex justify-between my-1.5">
-          
- 
-                        <div className="text-textColor text-[25px] bg-fixed p-2 hover:text-[#39E58C] hover:bg-[#39E58C]/30 rounded-lg">
-                            <TiArrowUpOutline className="size-5" />
-                        </div>
-             
-             
+            <div onClick={() => setIsOpen(!isOpen)} className="flex justify-between my-1.5">
+                <div className="text-textColor text-[25px] bg-fixed p-2 hover:text-[#39E58C] hover:bg-[#39E58C]/30 rounded-lg">
+                    <TiArrowUpOutline className="size-5" />
+                </div>
                 <div className="text-textColor text-[25px] bg-fixed p-2 hover:text-[#974166] hover:bg-[#461f30]/30 rounded-lg">
                     <FiMessageSquare className="size-5" />
                 </div>
@@ -73,9 +61,9 @@ const Post :React.FC<PostProps>  = ({ dataProps }) => {
                     <FiBookmark className="size-5" />
                 </div>
             </div>
-            <PostPopUp/>    
+            {/* {isOpen && <PostPopUp images={[]} isClose={() => setIsOpen(!isOpen)} time={""} />} */}
         </div>
     );
-}
+};
 
 export default Post;
