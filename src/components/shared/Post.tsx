@@ -6,6 +6,7 @@ import { FiMessageSquare, FiBookmark } from "react-icons/fi";
 import React, { useState } from "react";
 import { TiArrowUpOutline } from "react-icons/ti";
 import { relativeDate } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface PostData {
     images: string[];
@@ -25,11 +26,14 @@ export interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ dataProps }) => {
-    const { createdAt, images, message, semester } = dataProps;
+    const { createdAt, images, message, semester, userId } = dataProps;
     const [isOpen, setIsOpen] = useState(false);
+    
 
     return (
         <div className="shadow-lg p-3 rounded-2xl bg-cardColor1 max-w-sm">
+            <Skeleton className="h-12 w-12 rounded-full bg-textColor/50 mb-2" />
+
             <h1 className="font-bold line-clamp-3 text-white text-lg">
                 {message || `Public APIs — A directory of free and public APIs`}
             </h1>

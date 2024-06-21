@@ -1,133 +1,258 @@
+import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useState } from "react";
+import { useDropzone } from "react-dropzone";
+import fetchData from "data-fetch-ts";
+import { CgClose } from "react-icons/cg";
 
- 
-function PostForm({isClose}) {
- 
-  
-  const [formData, setFormData] = useState({
-    images: "",
-    semester: "1st",
+interface PostFormProps {
+  isClose: () => void;
+}
+
+interface FormData {
+  images: Array<string>;
+  semester: string;
+  totalBook: string;
+  message: string;
+  price: number;
+  urgent: boolean;
+  isAvaiableFullSet: boolean;
+}
+
+const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
+  const [formData, setFormData] = useState<FormData>({
+    images: [],
+    semester: "",
     totalBook: "",
-    price: 454,
     message: "",
+    price: 499,
     urgent: true,
     isAvaiableFullSet: true,
   });
+  const [error, setError] = useState<string>("");
+  const [imagePreview, setImagePreview] = useState<string[]>([]);
 
-  const handleChange = (e) => {
+  // handle Images
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | any>) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleDrop = async (acceptedFiles: File[]) => {
+    if (acceptedFiles.length + formData.images.length > 5) {
+      setError("You can upload a maximum of 5 images.");
+      return;
+    }
+
+    setError("");
+
+    const uploadedImages = await Promise.all(
+      acceptedFiles.map(async (file) => {
+        try {
+          // Create a new FormData object for the image upload
+          const formData = new FormData();
+          formData.append("image", file);
+
+          // Ensure NEXT_PUBLIC_ENDPOINT_IMAGEBB is correctly set
+          if (!process.env.NEXT_PUBLIC_ENDPOINT_IMAGEBB) {
+            throw new Error("Missing NEXT_PUBLIC_ENDPOINT_IMAGEBB environment variable.");
+          }
+
+          const endpoint = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_ENDPOINT_IMAGEBB}`;
+
+          // Perform the image upload using a more robust HTTP client
+          const response = await fetch(endpoint, {
+            method: "POST",
+            body: formData,
+          });
+
+
+          // Handle potential network or server issues
+          if (!response.ok) {
+            throw new Error(`Image upload failed with status: ${response.status}`);
+          }
+
+          // Parse the JSON response and extract the image URL
+          const data = await response.json();
+          console.log(data, "res");
+
+          return data.data.url;
+        } catch (error) {
+          console.error("Image upload error:", error);
+          setError("Failed to upload image. Please try again.");
+          return null; // Indicate a failed upload
+        }
+      })
+    );
+
+
+    const validImages = uploadedImages.filter((url) => url !== null) as string[];
+
+    setFormData({
+      ...formData,
+      images: [...formData.images, ...validImages],
+    });
+
+    setImagePreview([
+      ...imagePreview,
+      ...acceptedFiles.map((file) => URL.createObjectURL(file)),
+    ]);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form data submitted:', formData);
+    if (formData.images.length < 3) {
+      setError("You must upload at least 3 images.");
+      return;
+    }
+    setError("");
+    console.log("Form data submitted:", formData);
+    // Add your form submission logic here
   };
 
   const handleClose = () => {
-    isClose()
+    isClose();
+  };
+
+  // useDropzone hook result
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: handleDrop,
+    accept: "image/*",
+  });
+
+  const deleteImageBbHostedImage = (preview: string) => {
+    console.log(preview, "resonse");
+
   }
 
-
   return (
-    
-    <div className='min-h-screen fixed inset-0 bg-black/70 flex items-center justify-center  '>
-    <div className=" relative">
-      <div className='bg-white h-[80vh] rounded-lg my-20 overflow-y-scroll sm:min-w-[400px] mx-auto md:min-w-[500px]'>
-        <form className="bg-natural-700 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-neutral-800 mb-2" htmlFor="images">Images:</label>
-            <input
-              type="text"
-              id="images"
-              name="images"
-              value={formData.images}
-              onChange={handleChange}
-              className="w-full p-2 rounded border-2 border-neutral-950 text-neutral-800"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-neutral-800 mb-2" htmlFor="semester">Semester:</label>
-            <input
-              type="text"
-              id="semester"
-              name="semester"
-              value={formData.semester}
-              onChange={handleChange}
-              className="w-full p-2 rounded border-2 border-neutral-950 bg-natural-800 text-neutral-800"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-neutral-800 mb-2" htmlFor="totalBook">Total Book:</label>
-            <input
-              type="text"
-              id="totalBook"
-              name="totalBook"
-              value={formData.totalBook}
-              onChange={handleChange}
-              className="w-full p-2 rounded border-2 border-neutral-950 bg-natural-800 text-neutral-800"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-neutral-800 mb-2" htmlFor="price">Price:</label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="w-full p-2 border-2 border-neutral-950 rounded bg-natural-800 text-neutral-800"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-neutral-800 mb-2" htmlFor="message">Message:</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              className="w-full p-2 rounded border-2 border-neutral-950 bg-natural-800 text-neutral-800"
-            ></textarea>
-          </div>
-          <div className="mb-4">
-            <label className="block text-neutral-800 mb-2">Urgent:</label>
-            <input
-              type="checkbox"
-              id="urgent"
-              name="urgent"
-              checked={formData.urgent}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            <label className="text-neutral-800" htmlFor="urgent">Is Urgent</label>
-          </div>
-          <div className="mb-4">
-            <label className="block text-neutral-800 mb-2">Is Available Full Set:</label>
-            <input
-              type="checkbox"
-              id="isAvaiableFullSet"
-              name="isAvaiableFullSet"
-              checked={formData.isAvaiableFullSet}
-              onChange={handleChange}
-              className="mr-2 peer/draft"
-            />
-            <label className="text-neutral-800" htmlFor="isAvaiableFullSet">Available Full Set</label>
-          </div>
-          <button type="submit" className="bg-neutral-900 text-neutral-200 text-natural-800 p-2 rounded-lg shadow">
-            Submit
-          </button>
-        </form>
-      </div>
-         <div onClick={handleClose} className="absolute top-20 -right-12 border rounded-full p-2">
+    <div className="min-h-screen fixed inset-0 bg-shadowColor/50 flex items-center justify-center">
+      <div className="relative">
+        <div className="bg-bgColor shadow-lg text-textColor h-[90vh] rounded-xl my-20 overflow-y-scroll sm:min-w-[400px] mx-auto md:min-w-[500px]">
+          <form className="bg-natural-700 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-white mb-2" htmlFor="images">
+                Images:
+              </label>
+              <div
+                {...getRootProps()}
+                className="w-full p-6 border-2 border-dashed border-textColor rounded-xl bg-cardColor text-white cursor-pointer"
+              >
+                <input {...getInputProps()} />
+                <p>Drag & drop some files here, or click to select files</p>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {imagePreview.map((preview, index) => (
+                  <div key={index} className="relative w-24 h-24">
+                    <img
+                      src={preview}
+                      alt={`preview ${index}`}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <button onClick={() => deleteImageBbHostedImage(preview)}><CgClose className=" top-0 right-0 bg-white rounded-full cursor-pointer ml-5 absolute" /></button>
+                  </div>
+                ))}
+              </div>
+              {error && <p className="text-red-500 mt-2">{error}</p>}
+            </div>
+            <div className="mb-4">
+              <label className="block text-white mb-2" htmlFor="semester">
+                Semester:
+              </label>
+              <input
+                type="text"
+                id="semester"
+                placeholder="Enter Semester (1st, 2nd, etc.)"
+                name="semester"
+                value={formData.semester}
+                onChange={handleChange}
+                className="w-full p-2 rounded-xl ring-2 bg-cardColor transition-colors duration-100 border-textColor active:border-l-4 hover:border-l-4 ring-textColor/30 outline-none text-white"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-white mb-2" htmlFor="totalBook">
+                Total Book:
+              </label>
+              <input
+                type="text"
+                id="totalBook"
+                name="totalBook"
+                value={formData.totalBook}
+                onChange={handleChange}
+                className="w-full p-2 rounded-xl ring-2 bg-cardColor transition-colors duration-100 border-textColor active:border-l-4 hover:border-l-4 ring-textColor/30 outline-none text-white"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-white mb-2" htmlFor="price">
+                Price:
+              </label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                className="w-full p-2 rounded-xl ring-2 bg-cardColor transition-colors duration-100 border-textColor active:border-l-4 hover:border-l-4 ring-textColor/30 outline-none text-white"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-white mb-2" htmlFor="message">
+                Message:
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                className="w-full p-2 rounded-xl ring-2 bg-cardColor transition-colors duration-100 border-textColor active:border-l-4 hover:border-l-4 ring-textColor/30 outline-none text-white"
+              ></textarea>
+            </div>
+            <div className="mb-4 flex items-center gap-4">
+              <input
+                type="checkbox"
+                id="urgent"
+                name="urgent"
+                checked={formData.urgent}
+                onChange={handleChange}
+                className="rounded-2xl h-5 w-5"
+              />
+              <label className="text-white" htmlFor="urgent">
+                Is Urgent
+              </label>
+            </div>
+            <div className="mb-4 flex items-center gap-4">
+              <input
+                type="checkbox"
+                id="isAvaiableFullSet"
+                name="isAvaiableFullSet"
+                checked={formData.isAvaiableFullSet}
+                onChange={handleChange}
+                className="rounded-2xl h-5 w-5"
+              />
+              <label className="text-white" htmlFor="isAvaiableFullSet">
+                Available Full Set
+              </label>
+            </div>
+            <button
+              type="submit"
+              className="border-textColor/30 border-2 text-neutral-200 bg-cardColor p-2 rounded-lg shadow-lg"
+              disabled={formData.images.length < 3 || formData.images.length > 5}
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+        <div
+          onClick={handleClose}
+          className="absolute top-20 -right-12 border rounded-xl bg-cardColor border-textColor/30 p-2 cursor-pointer"
+        >
           <IoClose color="white" />
         </div>
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default PostForm
+export default PostForm;

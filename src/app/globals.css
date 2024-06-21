@@ -12,7 +12,24 @@
         font-family: "Playwrite PT", cursive;
     }
     .color-setUp {
-        @apply bg-cardColor text-textColor hover:text-white hover:bg-cardColor1 border-textColor/50
+        @apply bg-cardColor text-textColor hover:text-white hover:bg-cardColor1 border-textColor/50 
     }
 }
 
+
+/* only show scrollbars on large screens */
+@media screen and (min-width: 1024px) {
+    body::-webkit-scrollbar {
+        width: 0em;
+    }
+ }
+ 
+    
+    /* displaying two scrollbars was too much, here I'm hiding the navbar scrollbar while still maintaining scroll */
+    div::-webkit-scrollbar-track, div::-webkit-scrollbar-thumb {
+      display: none;
+    } 
+    div::-webkit-scrollbar {
+        width: 0;
+    }
+      

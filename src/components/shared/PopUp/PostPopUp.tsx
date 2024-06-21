@@ -9,6 +9,7 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from 'swiper/modules';
 import { relativeDate } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Props {
     data: PostData;
@@ -20,6 +21,8 @@ function PostPopUp({ data, isClose }: Props) {
 
     return <div className=" mx-auto bg-shadowColor/50 z-50 fixed inset-0 flex items-center justify-center min-h-screen ">
         <div className=" relative border border-textColor/50 bg-bgColor max-w-[300px] xs:max-w-[350px] mx-3 sm:max-w-5xl !rounded-xl md:min-h-[100px] p-4 pb-5 text-white">
+            <Skeleton className="h-12 w-12 rounded-full bg-textColor/50 mb-2" />
+
             <button onClick={isClose} className=' absolute right-1 sm:right-5 bg-cardColor text-textColor hover:text-white transition-all duration-500 p-2 rounded-xl'><CgClose size={20} /></button>
             <div className=' flex items-center justify-center  overflow-hidden'>
                 <div className=''>
