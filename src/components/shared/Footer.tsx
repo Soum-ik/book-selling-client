@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { BiHome, BiSolidMedal, BiUser, BiSearch } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
+import PostForm from "./PostForm";
 
 interface Content {
   id: number;
@@ -20,9 +21,44 @@ const contents: Content[] = [
 function Footer() {
   const [active, setActive] = useState<number>(1);
 
-  const handleActive = (id: number) => {
+   
+  const [actionTypes, setActionTypes] = useState({
+    search: false,
+    plus: false,
+    chatSystem: false,
+    profile: false
+  })
+
+
+  const handleColorEffect = (id: number) => {
     setActive(id);
   };
+
+  const handleActions = (name: string | undefined) => {
+    switch (name) {
+      case "Plus":
+        setActionTypes((prevActionTypes) => ({
+          ...prevActionTypes,
+          plus: true
+        }));
+      case "Search":
+        setActionTypes((prevActionTypes) => ({
+          ...prevActionTypes,
+          search: true
+        }));
+      case "Profile":
+        setActionTypes((prevActionTypes) => ({
+          ...prevActionTypes,
+          profile: true
+        }));
+      case "chatSystem":
+        setActionTypes((prevActionTypes) => ({
+          ...prevActionTypes,
+          chatSystem: true
+        }));
+    }
+  }
+
 
   return (
     <div className='md:hidden  p-3 transition-all duration-500 rounded-t-2xl mx-1 py-5 fixed bottom-0 left-0 right-0 bg-[#181a1f]'>
@@ -30,10 +66,10 @@ function Footer() {
         {contents.map((content) => (
           <div
             key={content.id}
-            onClick={() => handleActive(content.id)}
+            onClick={() => handleColorEffect(content.id)}
             className={`flex cursor-pointer items-center justify-center  flex-col ${content.id === active ? '   ' : ''}`}
           >
-            <div className={`text-[22px] sm:text-[30px] ${content.id === active ? 'text-white' : 'text-[#A8B3CF]'}`}>
+            <div onClick={() => handleActions(content.name)} className={`text-[22px] sm:text-[30px] ${content.id === active ? 'text-white' : 'text-[#A8B3CF]'}`}>
               {content.icon}
             </div>
             {content.name !== 'Plus' && (
@@ -43,6 +79,8 @@ function Footer() {
             )}
           </div>
         ))}
+
+        {actionTypes.plus && <PostForm isClose={() => !actionTypes.plus} />}
       </div>
     </div>
   );

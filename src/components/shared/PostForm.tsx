@@ -31,6 +31,8 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
   const [error, setError] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string[]>([]);
 
+  console.log(imagePreview, 'checking all images');
+
   // handle Images
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | any>) => {
     const { name, value, type, checked } = e.target;
@@ -122,15 +124,11 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
     accept: "image/*",
   });
 
-  const deleteImageBbHostedImage = (preview: string) => {
-    console.log(preview, "resonse");
-
-  }
 
   return (
     <div className="min-h-screen fixed inset-0 bg-shadowColor/50 flex items-center justify-center">
       <div className="relative">
-        <div className="bg-bgColor shadow-lg text-textColor h-[90vh] rounded-xl my-20 overflow-y-scroll sm:min-w-[400px] mx-auto md:min-w-[500px]">
+        <div className="bg-bgColor shadow-lg text-textColor h-[70vh] sm:h-[90vh] rounded-xl my-20 overflow-y-scroll max-w-[300px] xs:min-w-[400px] mx-auto md:min-w-[500px]">
           <form className="bg-natural-700 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-white mb-2" htmlFor="images">
@@ -151,7 +149,7 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
                       alt={`preview ${index}`}
                       className="w-full h-full object-cover rounded-lg"
                     />
-                    <button onClick={() => deleteImageBbHostedImage(preview)}><CgClose className=" top-0 right-0 bg-white rounded-full cursor-pointer ml-5 absolute" /></button>
+                    <button><CgClose className=" top-0 right-0 bg-white rounded-full cursor-pointer ml-5 absolute" /></button>
                   </div>
                 ))}
               </div>
@@ -176,10 +174,11 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
                 Total Book:
               </label>
               <input
-                type="text"
+                type="number"
                 id="totalBook"
                 name="totalBook"
                 value={formData.totalBook}
+                placeholder="Enter Pics Books"
                 onChange={handleChange}
                 className="w-full p-2 rounded-xl ring-2 bg-cardColor transition-colors duration-100 border-textColor active:border-l-4 hover:border-l-4 ring-textColor/30 outline-none text-white"
               />
@@ -204,6 +203,7 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
               <textarea
                 id="message"
                 name="message"
+                placeholder="Please drop some message "
                 value={formData.message}
                 onChange={handleChange}
                 className="w-full p-2 rounded-xl ring-2 bg-cardColor transition-colors duration-100 border-textColor active:border-l-4 hover:border-l-4 ring-textColor/30 outline-none text-white"
@@ -237,7 +237,7 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
             </div>
             <button
               type="submit"
-              className="border-textColor/30 border-2 text-neutral-200 bg-cardColor p-2 rounded-lg shadow-lg"
+              className="border-textColor/30 border-2 text-neutral-200 bg-cardColor p-2 rounded-lg shadow-lg cursor-pointer"
               disabled={formData.images.length < 3 || formData.images.length > 5}
             >
               Submit

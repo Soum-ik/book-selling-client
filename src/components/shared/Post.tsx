@@ -31,7 +31,7 @@ const Post: React.FC<PostProps> = ({ dataProps }) => {
     
 
     return (
-        <div className="shadow-lg p-3 rounded-2xl bg-cardColor1 max-w-sm">
+        <div className="shadow-lg p-3 rounded-2xl bg-cardColor1 mx-auto max-w-sm">
             <Skeleton className="h-12 w-12 rounded-full bg-textColor/50 mb-2" />
 
             <h1 className="font-bold line-clamp-3 text-white text-lg">

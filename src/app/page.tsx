@@ -8,9 +8,9 @@ import { Key } from "react";
 
 export default async function Page() {
   const endpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_BASEPATH}get-post`;
-  
+
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY2ZGQ4ZGRkZDFhMjViZTllZTYxNTMyIiwiaXNWZXJmaXllZCI6dHJ1ZSwicm9sZSI6IkFETUlOIiwic3VzcGVuZCI6ZmFsc2UsImlhdCI6MTcxODkxMDY3NywiZXhwIjoxNzE4OTk3MDc3fQ.uD_h0Rxtm2I92yQZuKLKdJl0p9G4LBKar4Nj_Bks0T8"
-  const { data, error} = await fetchData({ endpoint, token });
+  const { data, error } = await fetchData({ endpoint, token });
 
 
   return (
