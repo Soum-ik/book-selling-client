@@ -21,15 +21,13 @@ const contents: Content[] = [
 function Footer() {
   const [active, setActive] = useState<number>(1);
 
-   
+
   const [actionTypes, setActionTypes] = useState({
     search: false,
     plus: false,
     chatSystem: false,
     profile: false
   })
-
-
   const handleColorEffect = (id: number) => {
     setActive(id);
   };
@@ -60,6 +58,7 @@ function Footer() {
   }
 
 
+
   return (
     <div className='md:hidden  p-3 transition-all duration-500 rounded-t-2xl mx-1 py-5 fixed bottom-0 left-0 right-0 bg-[#181a1f]'>
       <div className='flex items-center  justify-between'>
@@ -80,7 +79,7 @@ function Footer() {
           </div>
         ))}
 
-        {actionTypes.plus && <PostForm isClose={() => !actionTypes.plus} />}
+        {actionTypes.plus && <PostForm isClose={() => setActionTypes(!actionTypes.plus)} />}
       </div>
     </div>
   );

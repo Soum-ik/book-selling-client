@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/shared/NavBar";
 import Footer from "@/components/shared/Footer";
-
+import NextTopLoader from 'nextjs-toploader';
 const inter = Inter({ subsets: ["vietnamese"] });
 
 export const metadata: Metadata = {
@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <NextTopLoader color="#A8B3CF" height={5} />
         <NavBar />
         <div className=" mt-10">
           {children}

@@ -31,8 +31,6 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
   const [error, setError] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string[]>([]);
 
-  console.log(imagePreview, 'checking all images');
-
   // handle Images
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | any>) => {
     const { name, value, type, checked } = e.target;
@@ -246,7 +244,7 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
         </div>
         <div
           onClick={handleClose}
-          className="absolute top-20 -right-12 border rounded-xl bg-cardColor border-textColor/30 p-2 cursor-pointer"
+          className="absolute top-20 z-50  -right-12 border rounded-xl bg-cardColor border-textColor/30 p-2 cursor-pointer"
         >
           <IoClose color="white" />
         </div>
