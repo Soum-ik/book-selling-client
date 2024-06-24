@@ -61,8 +61,7 @@ function Page() {
 
       const res = await response.json();
       if (res.statusCode === 200) {
-        // toast.success("Account created successfully");
-        toast("Account created successfully", {
+        toast("Account created successfully, Please check your email", {
           description: date + "",
           action: {
             label: "Close",
@@ -77,7 +76,7 @@ function Page() {
           number: "",
           semester: "",
         })
-        route.replace('/sign-in')
+        route.replace('/verifiy-user')
         return
       }
       toast.error(res.message)
