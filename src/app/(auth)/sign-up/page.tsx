@@ -3,9 +3,12 @@ import { FormData } from "@/lib/types/interfaces";
 import Link from "next/link"
 import React, { useState } from "react";
 import { SingUpSechmaValidation } from '@/lib/util/validation'
-import toast, { Toaster } from 'react-hot-toast'
+import { useRouter } from "next/navigation";
+import { toast } from "sonner"
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 function Page() {
+  const route = useRouter();
   // state
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -16,7 +19,7 @@ function Page() {
 
   });
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [eyeOn, setEyeOn] = useState(false);
 
 
   // to controlle all input changes
@@ -27,6 +30,8 @@ function Page() {
       [name]: value,
     }));
   };
+
+
 
   // submiting funcation 
   const handleFormSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -50,9 +55,21 @@ function Page() {
           'Content-Type': 'application/json'
         },
       });
+
+
+      const date = new Date()
+
       const res = await response.json();
       if (res.statusCode === 200) {
-        toast.success("Account created successfully");
+        // toast.success("Account created successfully");
+        toast("Account created successfully", {
+          description: date + "",
+          action: {
+            label: "Close",
+            onClick: () => console.log("Close"),
+          },
+        })
+
         setFormData({
           email: "",
           username: "",
@@ -60,6 +77,7 @@ function Page() {
           number: "",
           semester: "",
         })
+        route.replace('/sign-in')
         return
       }
       toast.error(res.message)
@@ -75,7 +93,7 @@ function Page() {
   return (
     <div>
 
-      <div className="flex items-center min-h-[60vh] vhbg-white dark:bg-gray-900">
+      <div className="flex items-center min-h-[60vh] bg-white dark:bg-gray-900">
         <div className="container mx-auto">
           <div className="max-w-md mx-auto my-10">
             <div className="text-center">
@@ -88,7 +106,7 @@ function Page() {
             </div>
             <div className="m-7">
               <form onSubmit={handleFormSubmit}>
-                <div className="mb-6">
+                <div className="mb-3">
                   <label
                     htmlFor="user-name"
                     className="block mb-2 text-sm text-gray-600 dark:text-gray-400"
@@ -105,7 +123,7 @@ function Page() {
                     className="w-full px-3 py-2   placeholder-gray-300 border border-gray-300 !rounded-xl focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                   />
                 </div>
-                <div className="mb-6">
+                <div className="mb-3">
                   <label
                     htmlFor="email"
                     className="block mb-2 text-sm text-gray-600 dark:text-gray-400"
@@ -123,7 +141,7 @@ function Page() {
                     className="w-full px-3 py-2   placeholder-gray-300 border border-gray-300 !rounded-xl focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                   />
                 </div>
-                <div className="mb-6">
+                <div className="mb-3">
                   <div className="flex justify-between mb-2">
                     <label
                       htmlFor="password"
@@ -133,18 +151,31 @@ function Page() {
                     </label>
 
                   </div>
-                  <input
-                    type="password"
-                    value={formData.password}
-                    onChange={(e) => handleChange(e)}
+                  <div className=" relative">
+                    <input
+                      type={eyeOn ? "text" : "password"}
+                      value={formData.password}
+                      onChange={(e) => handleChange(e)}
 
-                    name="password"
-                    id="password"
-                    placeholder="Your Password"
-                    className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 !rounded-xl focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                  />
+                      name="password"
+                      id="password"
+                      placeholder="Your Password"
+                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 !rounded-xl focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                    />
+                    {eyeOn ? (
+                      <IoEyeOutline
+                        className="  absolute  top-1.5 right-4 text-[1.5rem] text-[#777777] cursor-pointer"
+                        onClick={() => setEyeOn(false)}
+                      />
+                    ) : (
+                      <IoEyeOffOutline
+                        className="  absolute  top-1.5 right-4 text-[1.5rem] text-[#777777] cursor-pointer"
+                        onClick={() => setEyeOn(true)}
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className="mb-6">
+                <div className="mb-3">
                   <div className="flex justify-between mb-2">
                     <label
                       htmlFor="semester"
@@ -164,7 +195,7 @@ function Page() {
                     className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 !rounded-xl focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                   />
                 </div>
-                <div className="mb-6">
+                <div className="mb-3">
                   <div className="flex justify-between mb-2">
                     <label
                       htmlFor="password"
@@ -184,7 +215,7 @@ function Page() {
                     className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 !rounded-xl focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                   />
                 </div>
-                <div className="mb-6">
+                <div className="mb-3">
                   <button
                     type="submit"
                     disabled={loading}
@@ -208,11 +239,6 @@ function Page() {
           </div>
         </div>
       </div>
-      <Toaster
-        position="top-left"
-        reverseOrder={true}
-      />
-
 
     </div>
   )
