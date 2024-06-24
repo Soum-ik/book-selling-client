@@ -1,5 +1,5 @@
 'use client'
-import { FormData } from "@/lib/types/interfaces";
+import { SignUp } from "@/lib/types/interfaces";
 import Link from "next/link"
 import React, { useState } from "react";
 import { SingUpSechmaValidation } from '@/lib/util/validation'
@@ -10,7 +10,7 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 function Page() {
   const route = useRouter();
   // state
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<SignUp>({
     email: "",
     username: "",
     password: "",
@@ -25,7 +25,7 @@ function Page() {
   // to controlle all input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setFormData((prevData: any) => ({
       ...prevData,
       [name]: value,
     }));
