@@ -56,7 +56,7 @@ function page() {
           })
           const token = data.data['token']
           document.cookie = `authToken=${token}; max-age=3600; path=/;`;
-          route.refresh()
+          window.location.reload()
           route.push('/')
           return
         } await new Promise<void>((resolve) => {
@@ -72,7 +72,6 @@ function page() {
 
     } catch (error) {
       setLoading(false)
-
       toast('Something want wrong')
     }
   }
