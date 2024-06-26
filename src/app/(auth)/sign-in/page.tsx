@@ -23,56 +23,58 @@ function page() {
       [name]: value,
     }));
   };
-
-  const handleFormSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const endpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_BASEPATH}sign-in`;
+
+    setLoading(true);
 
     try {
-      setLoading(true)
+      const endpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_BASEPATH}sign-in`;
+      const response = await fetch(endpoint, {
+        body: JSON.stringify(formData),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      const fetchData = async () => {
-        const response = await fetch(endpoint, {
-          body: JSON.stringify(formData),
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+      const data = await response.json(); // Parse response body as JSON
+      console.log(data, 'checking');
+
+      const date = new Date();
+
+      if (data.statusCode === 200) {
+        // toast.success("Account created successfully");
+        toast(data.message, {
+          description: date.toString(),
+          action: {
+            label: "Close",
+            onClick: () => console.log("Close"),
           },
         });
-        const data = await response.json(); // Parse response body as JSON
-        const date = new Date()
-        if (data.statusCode === 200) {
-          // toast.success("Account created successfully");
-          toast(data.message, {
-            description: date + "",
-            action: {
-              label: "Close",
-              onClick: () => console.log("Close"),
-            },
-          })
-          setFormData({
-            email: "",
-            password: "",
-          })
-          const token = data.data['token']
-          document.cookie = `authToken=${token}; max-age=3600; path=/;`;
-          window.location.reload()
-          route.push('/')
-          return
-        } await new Promise<void>((resolve) => {
+        const token = data.data['token'];
+        document.cookie = `authToken=${token}; max-age=3600; path=/;`;
+        setFormData({
+          email: "",
+          password: "",
+        });
+        route.replace('/');
+        await new Promise<void>((resolve) => {
           setTimeout(() => {
             resolve();
-          }, 2000);
+          }, 100);
         });
-
-        toast.error(data.message)
+        window.location.reload()
+        setLoading(false);
+        return;
       }
-      fetchData()
-      setLoading(false)
-
+      toast.error(data.message);
     } catch (error) {
-      setLoading(false)
-      toast('Something want wrong')
+      console.log(error);
+
+      toast('Something went wrong');
+    } finally {
+      setLoading(false);
     }
   }
 

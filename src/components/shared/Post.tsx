@@ -28,8 +28,9 @@ export interface PostProps {
 const Post: React.FC<PostProps> = ({ dataProps }) => {
     const { createdAt, images, message, semester, userId } = dataProps;
     const [isOpen, setIsOpen] = useState(false);
-    
 
+
+    const imageUrl = images[0]?.startsWith('/') ? images[0] : `/${images[0]}`;
     return (
         <div className="shadow-lg p-3 rounded-2xl bg-cardColor1 mx-auto max-w-sm">
             <Skeleton className="h-12 w-12 rounded-full bg-textColor/50 mb-2" />
@@ -38,11 +39,11 @@ const Post: React.FC<PostProps> = ({ dataProps }) => {
                 {message || `Public APIs — A directory of free and public APIs`}
             </h1>
             <h1 className="font-semibold line-clamp-3 text-textColor text-xs mt-5">
-                {relativeDate(createdAt)}  {/* { || "2 Apr"} */}
+                {relativeDate(createdAt)}
             </h1>
             <div className="py-5 w-full group relative transition-colors duration-500">
                 <Image
-                    src={images[0] || "/images/image1.png"}
+                    src={`https://i.ibb.co/ZYn2dbR/Colorful-Modern-Infinity-Technology-Free-Logo.png`}
                     width={400}
                     height={400}
                     className="group-hover:blur-[5px] rounded-lg max-h-[200px] object-cover"

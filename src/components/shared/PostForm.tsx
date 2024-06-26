@@ -1,8 +1,13 @@
+'use client'
+
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { useDropzone } from "react-dropzone";
 import fetchData from "data-fetch-ts";
 import { CgClose } from "react-icons/cg";
+import { toast } from "sonner";
+import Cookies from 'js-cookie';
+
 
 interface PostFormProps {
   isClose: () => void;
@@ -19,14 +24,15 @@ interface FormData {
 }
 
 const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     images: [],
     semester: "",
     totalBook: "",
     message: "",
-    price: 499,
-    urgent: true,
-    isAvaiableFullSet: true,
+    price: 0,
+    urgent: false,
+    isAvaiableFullSet: false,
   });
   const [error, setError] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string[]>([]);
@@ -101,15 +107,58 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
     ]);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  let token = Cookies.get('authToken')
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formData.images.length < 3) {
       setError("You must upload at least 3 images.");
+      toast('You must upload at least 3 images', {
+        description: new Date() + '',
+        action: {
+          label: "Close",
+          onClick: () => console.log("Close"),
+        },
+      });
       return;
     }
-    setError("");
-    console.log("Form data submitted:", formData);
-    // Add your form submission logic here
+    try {
+      const endpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_BASEPATH}create-post`;
+      const body = formData
+      const data = await fetchData({ endpoint, method: "POST", body, token })
+      console.log(data, 'checking');
+      const date = new Date();
+      if (data.statusCode === 200) {
+        toast(data.message, {
+          description: date.toString(),
+          action: {
+            label: "Close",
+            onClick: () => console.log("Close"),
+          },
+        });
+        setFormData({
+          images: [],
+          semester: "",
+          totalBook: "",
+          message: "",
+          price: 0,
+          urgent: false,
+          isAvaiableFullSet: false,
+        });
+        // Reload the window and navigate to home page after successful sign-in
+        setLoading(false);
+        isClose()
+        return;
+      }
+
+
+
+      toast(data.message);
+    } catch (error) {
+      console.log(error);
+      toast('Something went wrong');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -236,9 +285,9 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
             <button
               type="submit"
               className="border-textColor/30 border-2 text-neutral-200 bg-cardColor p-2 rounded-lg shadow-lg cursor-pointer"
-              disabled={formData.images.length < 3 || formData.images.length > 5}
+              disabled={loading}
             >
-              Submit
+              {loading ? 'loading...' : 'submit'}
             </button>
           </form>
         </div>
