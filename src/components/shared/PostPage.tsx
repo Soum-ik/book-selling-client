@@ -3,30 +3,20 @@ import Post, { PostData } from "./Post";
 
 async function PostPage({ filterValue }: any) {
     const { isAvaiableFullSet, minPrice, maxPrice, semester, urgent, order } = filterValue;
-    let queryParams = ``;
-    if (isAvaiableFullSet !== undefined) {
-        queryParams += `isAvaiableFullSet=${isAvaiableFullSet}&`;
-    }
-    if (minPrice !== undefined) {
-        queryParams += `minPrice=${minPrice}&`;
-    }
-    if (maxPrice !== undefined) {
-        queryParams += `maxPrice=${maxPrice}&`;
-    }
-    if (semester !== undefined) {
-        queryParams += `semester=${semester}&`;
-    }
-    if (urgent !== undefined) {
-        queryParams += `urgent=${urgent}&`;
-    }
-    if (order !== undefined) {
-        queryParams += `order=${order}&`;
-    }
-    // Remove the trailing '&' if it exists
-    if (queryParams.endsWith('&')) {
-        queryParams = queryParams.slice(0, -1);
-    }
 
+    const queryParamsArray = [
+        isAvaiableFullSet !== undefined ? `isAvaiableFullSet=${isAvaiableFullSet}` : '',
+        minPrice !== undefined ? `minPrice=${minPrice}` : '',
+        maxPrice !== undefined ? `maxPrice=${maxPrice}` : '',
+        semester !== undefined ? `semester=${semester}` : '',
+        urgent !== undefined ? `urgent=${urgent}` : '',
+        order !== undefined ? `order=${order}` : ''
+    ];
+
+    // Filter out empty strings and join with '&'
+    const queryParams = queryParamsArray.filter(Boolean).join('&');
+    console.log(queryParams, "query params");
+    
     const endpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_BASEPATH}get-post?${queryParams}`;
     const DataFetch = async () => {
         const response = await fetch(endpoint, {
