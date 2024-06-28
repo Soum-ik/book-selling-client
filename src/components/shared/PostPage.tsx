@@ -2,7 +2,7 @@ import { Key } from "react";
 import Post, { PostData } from "./Post";
 
 async function PostPage({ filterValue }: any) {
-    const { isAvaiableFullSet, minPrice, maxPrice, semester, urgent, order } = filterValue;
+    const { isAvaiableFullSet, minPrice, maxPrice, semester, urgent, order, page } = filterValue;
 
     const queryParamsArray = [
         isAvaiableFullSet !== undefined ? `isAvaiableFullSet=${isAvaiableFullSet}` : '',
@@ -10,25 +10,24 @@ async function PostPage({ filterValue }: any) {
         maxPrice !== undefined ? `maxPrice=${maxPrice}` : '',
         semester !== undefined ? `semester=${semester}` : '',
         urgent !== undefined ? `urgent=${urgent}` : '',
-        order !== undefined ? `order=${order}` : ''
+        order !== undefined ? `order=${order}` : '',
+        page !== undefined ? `page=${page}` : ''
     ];
 
     // Filter out empty strings and join with '&'
     const queryParams = queryParamsArray.filter(Boolean).join('&');
-    console.log(queryParams, "query params");
-    
+
     const endpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_BASEPATH}get-post?${queryParams}`;
     const DataFetch = async () => {
         const response = await fetch(endpoint, {
-            cache: 'no-cache',
+            cache: "no-cache",
             next: {
                 revalidate: 60
-            }
+            },
         });
         return response.json()
     }
     const response = await DataFetch()
-    console.log(response, 'checking data');
 
     const { data } = response;
 

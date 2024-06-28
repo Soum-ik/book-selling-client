@@ -21,7 +21,6 @@ function MyFeed() {
     maxPrice: '',
     semester: '',
     urgent: false,
-    order: '',
 
   });
 
@@ -44,7 +43,7 @@ function MyFeed() {
             Feed Settings
           </h1>
         </DialogTrigger>
-        <DialogContent  className="sm:max-w-[425px] rounded-md bg-white">
+        <DialogContent className="sm:max-w-[425px] rounded-md bg-white">
           <DialogHeader>
             <DialogTitle>Edit your Feed</DialogTitle>
             <DialogDescription>
@@ -124,20 +123,7 @@ function MyFeed() {
                 Urgent
               </label>
             </div>
-            <div>
-              <label htmlFor="order" className="block text-sm font-medium text-gray-700">Order By</label>
-              <select
-                id="order"
-                name="order"
-                value={formData.order}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">Select Order</option>
-                <option value="name">Name</option>
-                <option value="date">Date</option>
-              </select>
-            </div>
+
             <DialogTrigger>
               <Button type="submit">Save changes</Button>
             </DialogTrigger>
