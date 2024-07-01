@@ -1,6 +1,6 @@
 
 import fetchData from "data-fetch-ts";
-import { cookies } from "next/headers";
+ 
 
 export default async function userInfo() {
     const token = cookies

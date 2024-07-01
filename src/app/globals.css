@@ -26,10 +26,33 @@
  
     
     /* displaying two scrollbars was too much, here I'm hiding the navbar scrollbar while still maintaining scroll */
-    div::-webkit-scrollbar-track, div::-webkit-scrollbar-thumb {
-      display: none;
-    } 
-    div::-webkit-scrollbar {
-        width: 0;
-    }
+    /* div::-webkit-scrollbar-track, div::-webkit-scrollbar-thumb { */
+      /* display: none; */
+    /* }  */
+    /* div::-webkit-scrollbar {
+        width: 10px;
+    } */
       
+    /* Customize the scrollbar track and thumb */
+div::-webkit-scrollbar {
+    width: 10px;
+    max-height: 5px; /* Set the width of the scrollbar */
+}
+
+div::-webkit-scrollbar-track {
+    max-height: 5px; /* Set the width of the scrollbar */
+    border-radius: 10px; /* Optional: Add rounded corners to the scrollbar thumb */
+    margin-top: 5px;
+    transition: all 0.3s;
+    margin-bottom: 5px;
+    background: #f1f1f1; /* Set the background of the scrollbar track */
+}
+
+div::-webkit-scrollbar-thumb {
+    background: #888; /* Set the background of the scrollbar thumb */
+    border-radius: 10px; /* Optional: Add rounded corners to the scrollbar thumb */
+}
+
+div::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Change the background of the scrollbar thumb on hover */
+}

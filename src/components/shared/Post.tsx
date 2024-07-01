@@ -41,7 +41,7 @@ const Post: React.FC<PostProps> = ({ dataProps }) => {
             <h1 className="font-semibold line-clamp-3 text-textColor text-xs mt-5">
                 {relativeDate(createdAt)}
             </h1>
-            <div className="py-5 w-full group relative transition-colors duration-500">
+            <div onClick={() => setIsOpen(!isOpen)} className="py-5 w-full group relative transition-colors duration-500">
                 <Image
                     src={`https://i.ibb.co/ZYn2dbR/Colorful-Modern-Infinity-Technology-Free-Logo.png`}
                     width={400}

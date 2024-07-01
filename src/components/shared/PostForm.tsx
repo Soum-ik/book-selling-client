@@ -173,7 +173,7 @@ const PostForm: React.FC<PostFormProps> = ({ isClose }) => {
 
 
   return (
-    <div className="min-h-screen fixed inset-0 bg-shadowColor/50 flex items-center justify-center">
+    <div className="min-h-screen z-[500px] fixed inset-0 bg-shadowColor/50 flex items-center justify-center">
       <div className="relative">
         <div className="bg-bgColor shadow-lg text-textColor h-[70vh] sm:h-[90vh] rounded-xl my-20 overflow-y-scroll max-w-[300px] xs:min-w-[400px] mx-auto md:min-w-[500px]">
           <form className="bg-natural-700 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>

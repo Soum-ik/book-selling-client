@@ -1,8 +1,13 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiHome, BiSolidMedal, BiUser, BiSearch } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import PostForm from "./PostForm";
+import ProfileSetting from "./Profile";
+import Cookies from "js-cookie";
+import fetchData from "data-fetch-ts";
+import { toast } from "sonner";
+import { UserResponse } from "@/lib/types/nterfaces";
 
 interface Content {
   id: number;
@@ -15,12 +20,30 @@ const contents: Content[] = [
   { id: 2, name: "Search", icon: <BiSearch /> },
   { id: 3, name: "Plus", icon: <FaPlus size={50} className="bg-[#1A1F26] p-3 !rounded-2xl" /> },
   { id: 4, name: "Profile", icon: <BiUser /> },
-  { id: 5, name: "Semester", icon: <BiSolidMedal /> },
+  { id: 5, name: "Chat", icon: <BiSolidMedal /> },
 ];
 
 function Footer() {
   const [active, setActive] = useState<number>(1);
+  const token = Cookies.get('authToken')
+  const [userInfo, setUserInfo] = useState<UserResponse>({});
 
+
+  useEffect(() => {
+    const endpoint = `${process.env.NEXT_PUBLIC_ENDPOINT_BASEPATH}verified-user`
+
+    async function GetData() {
+      const { data, error } = await fetchData({ endpoint, token });
+      if (error) toast(error, {
+        description: new Date() + '', action: {
+          label: "Close",
+          onClick: () => console.log("Close"),
+        },
+      });
+      setUserInfo(data)
+    }
+    GetData()
+  }, []);
 
   const [actionTypes, setActionTypes] = useState({
     search: false,
